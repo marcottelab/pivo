@@ -1,4 +1,4 @@
 # pivo
 Proteomes Inferred Via Orthology
 
-Repository for custom proteomes collapsed via orthology, and the scripts used to do.
+Repository for custom proteomes collapsed via orthology, along with the scripts and files used to do.
