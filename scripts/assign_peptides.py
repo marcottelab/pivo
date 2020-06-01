@@ -27,7 +27,7 @@ fasta = args.fasta
 if args.out == None:
 	writefile = args.peptides+'.back_assignments'
 else:
-	writefile = args.out+'.back_assignments'
+	writefile = args.out
 	
 pep_df = pd.read_csv(args.peptides, header=None)
 pep_df.columns = ['eggNOG_ID','peptide_match']
@@ -38,9 +38,11 @@ for pep in pep_df.iloc[:,1]:
 	pep_list.append(pep_fmt)
 
 pep_df['peptide_fmt'] = pep_list
+print("Formatted input file...")
 print(pep_df.head())
 
 pep_lookup = set(pep_list)
+print("Starting peptide lookup (this may take a few minutes)...")
 
 lookup_df = pd.DataFrame(columns=['peptide_fmt', 'protein_match'])
 
@@ -61,7 +63,7 @@ if args.collapse:
 	collapsed_df.to_csv(writefile+'.collapsed', index=False, sep='\t')
 	print(collapsed_df)
 else:
-	final_df.to_csv(writefile, index=False, sep='\t')
+	final_df.to_csv(writefile, index=False, sep=',')
 	print(final_df)
 
 
