@@ -10,7 +10,7 @@ if __name__ == "__main__":
     	Requires unique peptide matches. Outputs a tab-delimited file mapping the peptides assigned to each orthogroup \
     	back to protein FASTA entries assigned to that orthogroup.")
     parser.add_argument("-p", "--peptides", action="store", required=True,
-                                        help="Comma-separated file containing eggNOG groups and peptide matches")
+                                        help="Comma-separated file containing eggNOG groups, peptide matches")
     parser.add_argument("-f", "--fasta", action="store", required=True,
                                         help="Original FASTA file (that was mapped to eggNOG groups) containing \
                                         uncollapsed entries")
@@ -29,7 +29,7 @@ if args.out == None:
 else:
 	writefile = args.out
 	
-pep_df = pd.read_csv(args.peptides, header=None)
+pep_df = pd.read_csv(args.peptides)
 pep_df.columns = ['eggNOG_ID','peptide_match']
 
 pep_list = []
@@ -60,7 +60,7 @@ if args.collapse:
 	collapsed_df = final_df.groupby(['eggNOG_ID','peptide_match','peptide_fmt'],sort=False).agg(lambda x: set(x)).reset_index()
 	collapsed_df['protein_match'] = collapsed_df['protein_match'].apply(list)
 	collapsed_df['protein_match'] = [','.join(map(str,x)) for x in collapsed_df['protein_match']]
-	collapsed_df.to_csv(writefile+'.collapsed', index=False, sep='\t')
+	collapsed_df.to_csv(writefile+'.collapsed', index=False, sep=',')
 	print(collapsed_df)
 else:
 	final_df.to_csv(writefile, index=False, sep=',')
